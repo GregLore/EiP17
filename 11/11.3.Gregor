@@ -1,0 +1,13 @@
+# Aufgabe 11.3:
+a = [1,2,3,4]
+b = [5,6,7,8,9]
+y = 0
+z = 0
+x = int(input("x= "))
+for i in reversed(a):
+    y *= x
+    y += i
+for j in reversed(b):
+    z *= x
+    z += j
+print(y*z)
