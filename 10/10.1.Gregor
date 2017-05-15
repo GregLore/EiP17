@@ -1,8 +1,10 @@
 a = [0,1,2,3,4,5,6,7,8,9] # Beispiel Feld
-userIn = int(input("x= "))
-for i in a: # Iteration über die Elemente
-    if i == userIn:
-        print("Die Zahl ",userIn," befindet sich im Feld.")
-        break # An dieser Stelle müssen wir nicht mehr weiter suchen
-else: # else nur falls kein break passiert ist
-    print("Die Zahl",userIn,"befindet sich nicht im Feld.")
+numIters = int(input())
+for k in range (0, numIters):
+    userIn = int(input())
+    for i in a: # Iteration über die Elemente
+        if i == userIn:
+            print("True")
+            break # An dieser Stelle müssen wir nicht mehr weiter suchen
+    else: # else nur falls kein break passiert ist
+        print("False")
