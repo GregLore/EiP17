@@ -1,14 +1,14 @@
 a = [0,11,22,33,44,55,66,77,88,99] # Beispiel Feld
 
-userInLow = int(input("Untergrenze= "))
-userInHigh = int(input("Obergrenze= "))
+userInLow = int(input())
+userInHigh = int(input())
+startCount = -1
+endCount = -1
 
 for i in range(0, len(a)): # Iteration über die Elemente
-    if a[i] == userInLow:
+    if a[i] >= userInLow and startCount < 0:
         startCount = i
-    elif a[i] == userInHigh:
+    elif a[i] >= userInHigh and endCount < 0:
         endCount = i
-        print(endCount-startCount)
+        print(endCount-startCount+1)
         break
-else:
-    print("Mindestens eine der Zahlen befindet sich nicht im Feld.")
