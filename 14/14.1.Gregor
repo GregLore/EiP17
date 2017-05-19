@@ -1,0 +1,8 @@
+# Aufgabe 14.1:
+import random
+a = []
+n = int(input("n="))
+for i in range(n):
+    x = random.randint(0,n-1)
+    a.append(x)
+print(a)
