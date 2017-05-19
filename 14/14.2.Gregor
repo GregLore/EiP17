@@ -1,0 +1,16 @@
+# Aufgabe 14.2:
+import random
+a = []
+b = []
+v = 0
+n = int(input("n="))
+for i in range(n):
+    x = random.randint(0,n-1)
+    a.append(x)
+for j in range(len(a)):
+    if j in a:
+        b.append(True)
+        v += 1
+    else:
+        b.append(False)
+print(v)
