@@ -1,0 +1,13 @@
+# Aufgabe 14.3:
+import random
+a = []
+n = int(input("n="))
+v = 0
+for i in range(n):
+    y = random.randint(0,n-1)
+    a.append(y)
+a.sort()
+for j in range(len(a)-1):
+    if a[j] != a[j+1]:
+        v += 1
+print(v)
