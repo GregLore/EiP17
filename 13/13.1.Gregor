@@ -1,0 +1,17 @@
+#Aufgabe 13.1:
+b = []
+n = int(input())
+for i in range (0,n+1):
+    a = []
+    if len(b) != 0:
+        bTemp = b[i-1]
+        for j in range (0,i):
+            if j-1<0:
+                k0 = 0
+            else:
+                k0 = bTemp[j-1]
+            k1 = bTemp[j]
+            a.append(k0+k1)
+    a.append(1)
+    b.append(a)
+print(b)
