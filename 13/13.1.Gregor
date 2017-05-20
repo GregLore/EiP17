@@ -1,17 +1,18 @@
 #Aufgabe 13.1:
 b = []
 n = int(input())
-for i in range (0,n+1):
+for i in range (n):
     a = []
-    if len(b) != 0:
-        bTemp = b[i-1]
-        for j in range (0,i):
-            if j-1<0:
-                k0 = 0
-            else:
-                k0 = bTemp[j-1]
-            k1 = bTemp[j]
+    for j in range(i+1):
+        if j == 0 or j == i:
+            a.append(1)
+        else:
+            k0 = b[i-1][j-1]
+            k1 = b[i-1][j]
             a.append(k0+k1)
-    a.append(1)
     b.append(a)
 print(b)
+
+# Sauce will diese (oder vergleichbare) Ausgabe
+for x in b:
+    print(*x)
