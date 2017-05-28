@@ -82,11 +82,11 @@ def sub(pol1,pol2):
 def mul(pol1,pol2):
     polOut = []
     for i in range(len(pol1)+len(pol2)-1):
-        polOut.append(0*i)
+        polOut.append((0*i,1))
     for j in range(len(pol1)):
         for k in range(len(pol2)):
-            polOut[j+k] = mulFrac(pol1[j], pol2[k])
-    return changeMinus(polOut)
+            polOut[j+k] = addFrac(mulFrac(pol1[j], pol2[k]),polOut[j+k])
+    return polOut
 
 def div(pol1,pol2):
     
