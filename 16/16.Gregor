@@ -1,0 +1,41 @@
+A = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+B = [[0, 7, 23], [-7, 0, -4], [-23, 4, 0]]
+
+def spur(matrix):
+    spurVar = 0
+    for i in range(len(matrix)):
+        spurVar += matrix[i][i]
+    return spurVar
+
+def spaltensummennorm(matrix):
+    sumCur = [0,0,0]
+    for j in range(len(matrix)):
+        for i in range(len(matrix)):
+            sumCur[i] += abs(matrix[j][i])  # Eigentlich steht "Betrag" nicht in der Aufgabenstellung,
+    sumCur.sort()                           # aber Sauce behauptet, dass -30 = 30 und -30 > 19 seien...
+    return sumCur[len(sumCur)-1]
+
+def transponiere(matrixIn):
+    matrix = [x[:]for x in matrixIn]
+    for j in range(len(matrix)):
+        for i in range(j,len(matrix)):
+            matrix[j][i], matrix[i][j] = matrix[i][j], matrix[j][i]
+    return matrix
+
+def is_schiefsymmetrisch(matrixIn):
+    matrix = [y[:] for y in matrixIn]
+    for j in range(len(matrix)):
+        for i in range(len(matrix)):
+            matrix[j][i] = -matrix[j][i]
+    if matrixIn == transponiere(matrix):
+        return True
+    return False
+
+print(spur(A))
+print(spur(B))
+print(spaltensummennorm(A))
+print(spaltensummennorm(B))
+print(transponiere(A))
+print(transponiere(B))
+print(is_schiefsymmetrisch(A))
+print(is_schiefsymmetrisch(B))
