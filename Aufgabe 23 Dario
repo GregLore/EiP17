@@ -1,0 +1,111 @@
+# Ein einfaches 7x7 Hidoku
+feld1 =[[ 2, 0, 0, 0,11,38, 0],
+        [ 0, 1, 8, 0, 0,41,40],
+        [ 5, 0, 0, 0, 0, 0,49],
+        [ 0, 0, 0, 0, 0,47, 0],
+        [ 0,20, 0,33, 0, 0,45],
+        [16, 0,23,26, 0,31, 0],
+        [ 0,18,24, 0, 0, 0,29]]
+
+# Ein schwierigeres 8x8 Hidoku
+feld2 =[[ 0, 0, 0, 0,38, 0,35,34],
+        [ 3, 1, 0, 0, 0, 0, 0, 0],
+        [ 0, 8, 0,60,53, 0, 0, 0],
+        [ 0, 0, 0,63,59, 0,41, 0],
+        [ 0,47,64, 0, 0,55, 0, 0],
+        [ 0,18, 0, 0, 0, 0, 0,26],
+        [13, 0, 0, 0, 0,28, 0, 0],
+        [ 0, 0, 0, 0,21, 0, 0, 0]]
+
+feld3 =[[ 0, 0, 0,15,16,17, 0, 7, 6],
+        [78, 0,81, 0, 0, 0,18, 0, 5],
+        [76, 0, 0,66,67, 0,19, 3, 0],
+        [ 0, 0,64,68, 0, 0,29,30, 0],
+        [ 0,73,70, 0, 0, 0, 0,32, 1],
+        [ 0,72, 0, 0, 0, 0,26,35, 0],
+        [ 0, 0, 0, 0,47, 0, 0,37, 0],
+        [59, 0,51,52, 0, 0, 0, 0, 0],
+        [58, 0, 0,49, 0, 0, 0,42,41]]
+
+feld4 =[[ 0, 0,93, 0, 0, 0,  0, 0, 0,57],
+        [ 0, 0, 0,22, 0,53, 54,40, 0, 0],
+        [ 0, 0,18,23,52, 0,100, 0, 0, 0],
+        [ 0, 0, 0, 0, 0,99, 33, 0, 0, 0],
+        [ 0, 0, 0, 0, 0,25,  0, 0, 0, 0],
+        [ 0, 0, 0, 0, 0, 0,  0, 0, 0,29],
+        [14, 0, 7, 0, 0, 0,  0, 0, 0, 0],
+        [ 0, 0, 0,65, 0, 0, 46,72,77, 0],
+        [ 0, 9, 0, 0, 0, 0,  0, 0,80,76],
+        [ 1, 0, 0,11, 0,68, 82, 0, 0, 0]]
+
+# Formatierte Ausgabe des Spielfeldes
+def print_hidoku(feld):
+    n = len(feld)
+    for i in range(n):
+        for j in range(n):
+            print('{0:4d}'.format(feld[i][j]), end='')
+        print()
+    print()
+
+# Suche nach dem Startfeld
+# Durchsucht das Feld nach der eingetragenen Zahl 1 (Startpunkt) und gibt ihre Position aus
+def find_start(feld):
+    n = len(feld)
+    for i in range(n):
+        for j in range(n):
+            if feld[i][j] == 1:
+                return (i,j)
+
+# Wir ermitteln, welche Felder fest vorgegeben sind.
+# Wir iterieren durch das Feld und setzen die POSITION des Feldes "fixed" True, die dem WERT der eingetragenen Zahl entspricht.
+#  Bsp: Im feld1 ist die Position [0,0]=2, damit wird das Feld "fixed" an der Position [2]=True gesetzt.
+def set_fixed(feld):
+    n = len(feld)
+    fixed = [False for i in range(n*n+1)]
+    for i in range(n):
+        for j in range(n):
+            fixed[feld[i][j]] = True
+    return fixed
+
+# Wir lösen das Rätsel mit Hilfe von Backtracking
+def solve_hidoku(feld,z,s):
+    number = feld[z][s]         # Wert der aktuellen Feldposition. Im ersten Durchlauf 1, dann aufsteigend
+    n = len(feld)
+    if number == n*n:           # Endbedingung unserer Funktion: wenn nahtlos bis zur Endposition n*n durchiteriert wurde, return true
+        return True
+    number += 1
+
+    for i in range(-1,2):       # wir durchsuchen alle Feldpositionen mit einer Abweichung von -1 bis 2 um unsere letzte Position nach unserer nun gesuchten Zahl. bei einem Fund beginnen wir mit der nächsten Zahl
+        if z+i < 0 or z+i >= n:
+            continue
+        for j in range(-1,2):
+            if i == 0 and j == 0:
+                continue
+            if s+j < 0 or s+j >= n:
+                continue
+            if feld[z+i][s+j] == number:
+                return solve_hidoku(feld,z+i,s+j)
+
+    if fixed[number]:  # Wenn die momentane Zahl eine gegebene ist, und bisher nicht gefunden wurde, return False
+        return False
+
+    for i in range(-1,2):   # Wir suchen nun nach einem freien Feld in Reichweite unseres letzten Feldes, setzen unsere gesuchte Zahl dort ein, und führen unsere Funktion unter dieser Annahme wieder aus. Hier entsteht die Schachtelung der "rekursiven Versuche".
+        if z+i < 0 or z+i >= n:
+            continue
+        for j in range(-1,2):
+            if i == 0 and j == 0:
+                continue
+            if s+j < 0 or s+j >= n:
+                continue
+            if feld[z+i][s+j] > 0:
+                continue
+            feld[z+i][s+j] = number
+            if solve_hidoku(feld,z+i,s+j):
+                return True
+            feld[z+i][s+j] = 0
+    return False
+
+fixed = set_fixed(feld4)
+(start_x,start_y) = find_start(feld4)
+if solve_hidoku(feld4,start_x,start_y):
+    print_hidoku(feld4)
