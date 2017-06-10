@@ -1,0 +1,29 @@
+def valid(a,k):
+    for i in range(0,k):
+        if a[i] == a[k]:
+            return False
+        if a[k]-a[i] == k-i:
+            return False
+        if a[k]-a[i] == i-k:
+            return False
+    return True
+
+def solve(a,k):
+    n = len(a)
+    global anzahl
+    if k == n:
+        anzahl += 1
+        return True
+    for i in range(0,n):
+        a[k] = i
+        if  not valid(a,k):
+            continue
+        if solve(a,k+1):
+            continue
+
+    return False
+
+n = 8
+a = [0 for i in range(n)]
+
+solve(a,0)
