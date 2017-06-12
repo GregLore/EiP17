@@ -1,0 +1,97 @@
+'''
+1. Feld von Feldern (Zeile x Spalte) erstellen.
+2. Durchiterieren bis eine Zahl gefunden wurde.
+3. Nachbarfelder durchsuchen, ob dort schon markiert oder frei.
+4a. Falls markiert und Anzahl passt, True
+4b. Falls markiert und Anzahl zu viel, -> Backtracking (siehe unten)
+5. Ansonsten Feld markieren und Nachbarfelder auf Zahlen überprüfen, damit nicht zu viele Felder schwarz sind
+5a. Falls doch zu viel schwarze -> Backtracking
+6. 
+'''
+
+# Konstanten
+global n
+n = 7
+totMines = 10
+placedMines = 0
+
+# Markiert (x,y,Wert)
+markedA = ((6,0,1),(0,1,2),(5,1,2),(2,2,3),(6,2,1),(2,3,3),(0,4,2),(2,4,1),(4,4,1),(5,4,3),(1,5,3),(6,5,1),(3,6,2))
+
+def makeField(marked):
+    feld = [[0 for i in range(n)] for i in range(n)]
+    for j in marked:
+        feld[j[1]][j[0]] = j[2]
+    return feld
+
+def checkMine(feld,x,y):
+    for j in range(-1,2):
+        if y+j < 0 or y+j > n-1:
+            continue
+        for i in range(-1,2):
+            if x+i < 0 or x+i > n-1:
+                continue
+            elif x+i == 0 and y+j == 0:
+                continue
+            else:
+                if checkField(feld, x+i, y+j):
+                    return True
+    return False
+
+def checkField(feld,x,y):
+    countMines = 1
+    for j in range(-1,2):
+        if y+j < 0 or y+j > n-1:
+            continue
+        for i in range(-1,2):
+            if x+i < 0 or x+i > n-1:
+                continue
+            elif x+i == 0 and y+j == 0:
+                continue
+            elif feld[y+j][x+i] == -1:
+                countMines += 1
+                if countMines > feld[y][x]:
+                    return False
+    return True
+                
+
+def placeMine(feld,x,y):
+    for j in range(-1,2):
+        if y+j < 0 or y+j > n-1:
+            continue
+        for i in range(-1,2):
+            if x+i < 0 or x+i > n-1:
+                continue
+            elif x+i == 0 and y+j == 0:
+                continue
+            elif feld[y+j][x+i] > 0:
+                continue
+            #elif feld[y+j][x+i] == -1:
+                #if checkMine(feld, x+i, y+j):
+                    #return True
+            else:
+                if checkMine(feld, x+i, y+j):
+                    feld[y+j][x+i] = -1
+    return False
+
+def solveField(feld):
+    for y in range(n):
+        for x in range(n):
+            if feld[y][x] > 0:
+                if placeMine(feld, x, y):
+                    continue
+                #else:
+                    #solveField(feld)
+    return feld
+
+feldA = makeField(markedA)
+
+solveField(feldA)
+
+for y in feldA:
+    for x in y:
+        if x == -1:
+            print(" X", end = " ")
+        else:
+            print("{0:2d}".format(x), end = " ")
+    print("")
