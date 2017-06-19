@@ -1,0 +1,56 @@
+class Rechteck:
+    def __init__(self,cx,cy,l,b):
+        self.x = cx
+        self.y = cy
+        self.l = l
+        self.b = b
+    
+    def __str__(self):
+        return "[{0:.1f}|{1:.1f}] x [{2:.1f}|{3:.1f}]".format(self.x-self.b/2,self.x+self.b/2,self.y-self.l/2,self.y+self.l/2)
+
+    def rotiere(self):
+        self.l, self.b = self.b, self.l
+        return
+
+    def verschiebe(self,tx,ty):
+        self.x += tx
+        self.y += ty
+        return
+
+    def compareX(self,other):
+        if self.x < other.x:
+            if self.x+self.l/2 < other.x-other.l/2:
+                return (0,0)
+            else:
+                return((self.x+other.x)/2,((self.x+self.l/2) - (other.x-other.l/2)))
+        else:
+            if self.x-self.l/2 > other.x+other.l/2:
+                return(0,0)
+            else:
+                return((self.x+other.x)/2,((other.x+other.l/2) - (self.x-self.l/2)))
+        return(0,0)
+    
+    def compareY(self,other):
+        if self.y < other.y:
+            if self.y+self.b/2 < other.y-other.b/2:
+                return (0,0)
+            else:
+                return((self.y+other.y)/2,((self.y+self.b/2) - (other.y-other.b/2)))
+        else:
+            if self.y-self.b/2 > other.y+other.b/2:
+                return(0,0)
+            else:
+                return((self.y+other.y)/2,((other.y+other.b/2) - (self.y-self.b/2)))
+        return (0,0)
+    
+    def schnitt(self,other):
+        newx = self.compareX(other)
+        if newx != (0,0):
+            newy = self.compareY(other)
+            if newy != (0,0):
+                result = Rechteck(newx[0],newy[0],newx[1],newy[1])
+                return result
+        return
+    
+    def flaeche(self):
+        return self.b*self.l
